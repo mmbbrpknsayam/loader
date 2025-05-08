@@ -10,6 +10,9 @@ end
 local Projects = {
     [126884695634066] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/grow"; -- Grow-a-Garden
     [6516141723] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/door"; -- Door
+    [6403373529] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/slap"; -- Slap-battle
+    [192800] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/pizza"; -- Pizza-place
+    [116495829188952] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/rail"; -- dead-rails
 }
 
 local placeId = game.PlaceId
