@@ -7,7 +7,7 @@ if not script_key or not validKeys[script_key] then
     return
 end
 
-local gameId = game.PlaceId
+local placeId = game.PlaceId
 
 local Projects = {
     [126884695634066] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/grow"; -- Grow-a-Garden
@@ -19,5 +19,5 @@ if loaderUrl then
     -- Directly load and execute the script
     loadstring(game:HttpGet(loaderUrl))()
 else
-    warn("No loader found for this game. GameId:", gameId)
+    warn("No loader found for this game. PlaceId:", placeId)
 end
