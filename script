@@ -25,7 +25,7 @@ local Projects = {
     ["Slap Battle"] = {
         GameId = 2380077519;
         PlaceIds = {};
-        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/slap";
+        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/Slap.lua";
     };
     ["Pizza Place"] = {
         GameId = 47545;
