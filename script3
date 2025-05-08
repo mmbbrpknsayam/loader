@@ -1,0 +1,51 @@
+local validKeys = {
+    ["Lqv5Y8Hd29MWcAz"] = true,
+}
+
+if not script_key or not validKeys[script_key] then
+    game.Players.LocalPlayer:Kick("Whitelist error Invalid key. Please use the correct key.")
+    return
+end
+
+local Projects = {
+    ["Grow a Garden"] = {
+        GameId = 7436755782;
+        PlaceIds = {};
+        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/grow";
+    };
+    ["Door"] = {
+        GameId = 2440500124;
+        PlaceIds = {};
+        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/door";
+    };
+    ["Slap Battle"] = {
+        GameId = 2380077519;
+        PlaceIds = {};
+        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/slap";
+    };
+    ["Pizza Place"] = {
+        GameId = 47545;
+        PlaceIds = {};
+        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/pizza";
+    };
+    ["Dead Rails"] = {
+        GameId = 7018190066;
+        PlaceIds = {};
+        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/rail";
+    };
+}
+
+local Loaded = false
+local gameId = game.GameId
+
+for _, v in pairs(Projects) do
+    if v.GameId == gameId then
+        Loaded = true
+        print("✅ Loader found for GameId:", gameId)
+        loadstring(game:HttpGet(v.Loader))()
+    end
+end
+
+if not Loaded then
+    warn("❌ No loader found for this GameId:", gameId)
+end
