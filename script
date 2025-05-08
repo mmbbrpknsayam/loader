@@ -11,7 +11,7 @@ local gameId = game.PlaceId
 
 local Projects = {
     [126884695634066] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/grow"; -- Grow-a-Garden
-    [2440500124] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/door"; -- Door
+    [6516141723] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/door"; -- Door
 }
 
 local loaderUrl = Projects[gameId]
