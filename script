@@ -8,16 +8,16 @@ if not script_key or not validKeys[script_key] then
 end
 
 local Projects = {
-    [7436755782] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/grow"; -- Grow-a-Garden
-    [6516141723] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/door"; -- Door
+    [999] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/grow"; -- Grow-a-Garden
+    [999] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/door"; -- Door
 }
 
-local gameId = game.GameId
-local loaderUrl = Projects[gameId]
+local placeId = game.PlaceId
+local loaderUrl = Projects[placeId]
 
 if loaderUrl then
-    print("✅ Loader found for GameId:", gameId)
+    print("✅ Loader found for PlaceId:", placeId)
     loadstring(game:HttpGet(loaderUrl))()
 else
-    warn("🚫 No loader found for this GameId:", gameId)
+    warn("🚫 No loader found for this PlaceId:", placeId)
 end
