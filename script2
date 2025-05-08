@@ -12,7 +12,7 @@ local Projects = {
     [6516141723] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/door"; -- Door
     [2380077519] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/slap"; -- Slap-battle
     [192800] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/pizza"; -- Pizza-place
-    [2380077519] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/rail"; -- dead-rails
+    [999] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/rail"; -- dead-rails
 }
 
 local gameId = game.GameId
