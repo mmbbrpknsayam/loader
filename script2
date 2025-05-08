@@ -8,8 +8,11 @@ if not script_key or not validKeys[script_key] then
 end
 
 local Projects = {
-    [7436755782] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/grow"; -- Grow-a-Garden
-    [2440500124] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/door"; -- Door
+    [126884695634066] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/grow"; -- Grow-a-Garden
+    [6516141723] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/door"; -- Door
+    [2380077519] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/slap"; -- Slap-battle
+    [192800] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/pizza"; -- Pizza-place
+    [2380077519] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/rail"; -- dead-rails
 }
 
 local gameId = game.GameId
