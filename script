@@ -8,7 +8,7 @@ if not script_key or not validKeys[script_key] then
 end
 
 local Projects = {
-    [999] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/grow"; -- Grow-a-Garden
+    [126884695634066] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/grow"; -- Grow-a-Garden
     [999] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/door"; -- Door
 }
 
