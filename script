@@ -14,7 +14,7 @@ local Projects = {
     [6516141723] = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/door"; -- Door
 }
 
-local loaderUrl = Projects[gameId]
+local loaderUrl = Projects[PlaceId]
 if loaderUrl then
     -- Directly load and execute the script
     loadstring(game:HttpGet(loaderUrl))()
