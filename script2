@@ -1,0 +1,64 @@
+local script_key = "Lqv5Y8Hd29MWcAz"
+
+local validKeys = {
+    ["Lqv5Y8Hd29MWcAz"] = true,
+}
+
+if not script_key or not validKeys[script_key] then
+    game.Players.LocalPlayer:Kick("Whitelist error: Invalid key.")
+    return
+end
+
+local Projects = {
+    ["Door"] = {
+        GameId = 6516141723;
+        PlaceIds = {};
+        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/door";
+    };
+    ["Anime Vanguards"] = {
+        GameId = 5578556129;
+        PlaceIds = {};
+        Loader = "https://api.luarmor.net/files/v3/loaders/be2f65b9bda9c9e9aaf37dbbe3d48070.lua";
+    };
+    ["Fisch"] = {
+        GameId = 5750914919;
+        PlaceIds = {};
+        Loader = "https://api.luarmor.net/files/v3/loaders/3c7650df1287b147b62944e27ae8006a.lua";
+    };
+    ["Jujutsu Infinite"] = {
+        GameId = 3808223175;
+        PlaceIds = {};
+        Loader = "https://api.luarmor.net/files/v3/loaders/1e9916162a8c65e9b12fb4fd43fdb2ab.lua";
+    };
+    ["Anime Adventures"] = {
+        GameId = 3183403065;
+        PlaceIds = {};
+        Loader = "https://api.luarmor.net/files/v3/loaders/e35860641326143c12c12f00dbffade4.lua";
+    };
+    ["Beaks"] = {
+        GameId = 7095682825;
+        PlaceIds = {};
+        Loader = "https://api.luarmor.net/files/v3/loaders/b8966cedce625dac5d782b13ea5d7a3d.lua";
+    };
+    ["Dead Rails"] = {
+        GameId = 7018190066;
+        PlaceIds = {};
+        Loader = "https://api.luarmor.net/files/v3/loaders/2d9f941db1fc0f126b147f7a827a1c14.lua";
+    };
+}
+
+local currentGameId = game.GameId
+local loaded = false
+
+for name, data in pairs(Projects) do
+    if data.GameId == currentGameId then
+        loaded = true
+        print("✅ Loader found for:", name)
+        loadstring(game:HttpGet(data.Loader))()
+        break
+    end
+end
+
+if not loaded then
+    warn("🚫 No loader found for GameId:", currentGameId)
+end
