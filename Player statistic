@@ -81,8 +81,20 @@ healthLabel.TextScaled = true
 healthLabel.Font = Enum.Font.SourceSans
 healthLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
 
+-- Level
+local levelLabel = Instance.new("TextLabel", detailFrame)
+levelLabel.Position = UDim2.new(0, 20, 0, 200)
+levelLabel.Size = UDim2.new(1, -40, 0, 25)
+levelLabel.Text = "Level: N/A"
+levelLabel.TextScaled = true
+levelLabel.Font = Enum.Font.SourceSans
+levelLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+
 -- To store the health change connection so we can disconnect it when switching players
 local currentHealthConnection = nil
+
+-- To store the level change connection so we can disconnect it when switching players
+local currentLevelConnection = nil
 
 -- Function to update health when it changes
 local function updateHealth(selectedPlayer)
@@ -106,13 +118,34 @@ local function updateHealth(selectedPlayer)
 	end
 end
 
+-- Function to update level when it changes
+local function updateLevel(selectedPlayer)
+	-- Disconnect the previous level connection if it exists
+	if currentLevelConnection then
+		currentLevelConnection:Disconnect()
+	end
+
+	-- Now check the new player's level
+	local levelValue = selectedPlayer:WaitForChild("Data"):WaitForChild("Level")
+
+	-- Initial level update
+	levelLabel.Text = "Level: " .. levelValue.Value
+
+	-- Connect to the Level property change event
+	currentLevelConnection = levelValue:GetPropertyChangedSignal("Value"):Connect(function()
+		-- Update level whenever it changes
+		levelLabel.Text = "Level: " .. levelValue.Value
+	end)
+end
+
 -- Update player details
 local function updateDetails(selectedPlayer)
 	displayNameLabel.Text = selectedPlayer.DisplayName
 	usernameLabel.Text = selectedPlayer.Name
 
-	-- Start updating health when the player is selected
+	-- Start updating health and level when the player is selected
 	updateHealth(selectedPlayer)
+	updateLevel(selectedPlayer)
 end
 
 -- Refresh player list
