@@ -466,6 +466,7 @@ end)
 
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
+local camera = workspace.CurrentCamera
 
 -- UI Root
 local screenGui = Instance.new("ScreenGui")
@@ -580,9 +581,10 @@ unviewLabel.TextScaled = true
 unviewLabel.Font = Enum.Font.SourceSans
 unviewLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
 
--- Helper function to update the selected player's info
 local currentHealthConnection
 local currentCharConnection
+local selectedPlayer = nil
+local originalSubject = camera.CameraSubject
 
 local function updatePlayerInfo(plr)
 	displayNameLabel.Text = "Display Name: " .. plr.DisplayName
@@ -655,4 +657,17 @@ Players.PlayerAdded:Connect(function(plr)
 	button.MouseButton1Click:Connect(function()
 		updatePlayerInfo(plr)
 	end)
+end)
+
+viewLabel.MouseButton1Click:Connect(function()
+	if selectedPlayer and selectedPlayer.Character and selectedPlayer.Character:FindFirstChild("Humanoid") then
+		originalSubject = camera.CameraSubject
+		camera.CameraSubject = selectedPlayer.Character.Humanoid
+	end
+end)
+
+unviewLabel.MouseButton1Click:Connect(function()
+	if player.Character and player.Character:FindFirstChild("Humanoid") then
+		camera.CameraSubject = player.Character.Humanoid
+	end
 end)
