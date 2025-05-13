@@ -328,3 +328,117 @@ unviewLabel.Text = "Unview"
 unviewLabel.TextScaled = true
 unviewLabel.Font = Enum.Font.SourceSans
 unviewLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+
+-- To store the health change connection so we can disconnect it when switching players
+local currentHealthConnection = nil
+
+-- To store the level change connection so we can disconnect it when switching players
+local currentLevelConnection = nil
+
+-- Function to update health when it changes
+local function updateHealth(selectedPlayer)
+	-- Disconnect the previous health connection if it exists
+	if currentHealthConnection then
+		currentHealthConnection:Disconnect()
+	end
+
+	-- Now check the new player's health
+	if selectedPlayer.Character and selectedPlayer.Character:FindFirstChild("Humanoid") then
+		local humanoid = selectedPlayer.Character.Humanoid
+
+		-- Initial health update
+		healthLabel.Text = "Health: " .. humanoid.Health
+
+		-- Connect to the Health property change event
+		currentHealthConnection = humanoid:GetPropertyChangedSignal("Health"):Connect(function()
+			-- Update health whenever it changes
+			healthLabel.Text = "Health: " .. humanoid.Health
+		end)
+	end
+end
+
+-- Function to update level when it changes
+local function updateLevel(selectedPlayer)
+	-- Disconnect the previous level connection if it exists
+	if currentLevelConnection then
+		currentLevelConnection:Disconnect()
+	end
+
+	-- Now check the new player's level
+	local levelValue = selectedPlayer:WaitForChild("Data"):WaitForChild("Level")
+
+	-- Initial level update
+	levelLabel.Text = "Level: " .. levelValue.Value
+
+	-- Connect to the Level property change event
+	currentLevelConnection = levelValue:GetPropertyChangedSignal("Value"):Connect(function()
+		-- Update level whenever it changes
+		levelLabel.Text = "Level: " .. levelValue.Value
+	end)
+end
+
+-- Update player details
+local function updateDetails(selectedPlayer)
+	displayNameLabel.Text = selectedPlayer.DisplayName
+	usernameLabel.Text = selectedPlayer.Name
+
+	-- Start updating health and level when the player is selected
+	updateHealth(selectedPlayer)
+	updateLevel(selectedPlayer)
+end
+
+-- Refresh player list
+local function refreshPlayerList()
+	for _, child in ipairs(playerListFrame:GetChildren()) do
+		if child:IsA("TextButton") then
+			child:Destroy()
+		end
+	end
+
+	for _, plr in ipairs(Players:GetPlayers()) do
+		local button = Instance.new("TextButton", playerListFrame)
+		button.Size = UDim2.new(1, -8, 0, 30)
+		button.Text = plr.DisplayName
+		button.BackgroundColor3 = Color3.fromRGB(160, 160, 160)
+		button.TextScaled = true
+		button.Font = Enum.Font.SourceSans
+		button.TextColor3 = Color3.fromRGB(20, 20, 20)
+		button.MouseButton1Click:Connect(function()
+			updateDetails(plr)
+		end)
+	end
+end
+
+-- Auto refresh player list every 5 seconds
+task.spawn(function()
+	while true do
+		refreshPlayerList()
+		task.wait(5)
+	end
+end)
+
+refreshPlayerList()
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.ResetOnSpawn = false  -- Prevent the UI from resetting on spawn
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create ImageButton
+local imageButton = Instance.new("ImageButton")
+imageButton.Parent = screenGui
+imageButton.Size = UDim2.new(0, 50, 0, 50)  -- Set size of the button
+imageButton.Position = UDim2.new(0, 10, 0, 70)  -- Move the button down 50 pixels
+imageButton.Image = "rbxassetid://128243454668365"  -- Set image using the asset ID
+
+-- Set the button's background transparency to 100% (invisible)
+imageButton.BackgroundTransparency = 1
+
+-- Create UICorner for rounding the button's corners
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(1, 0)  -- Full circle if the button is square
+uiCorner.Parent = imageButton
+
+-- When the button is clicked
+imageButton.MouseButton1Click:Connect(function()
+    mainFrame.Visible = not mainFrame.Visible
+end)
