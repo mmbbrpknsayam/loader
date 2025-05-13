@@ -203,3 +203,128 @@ uiCorner.Parent = imageButton
 imageButton.MouseButton1Click:Connect(function()
     mainFrame.Visible = not mainFrame.Visible
 end)
+
+
+
+
+
+
+
+
+
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+-- UI Root
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "PlayerHub"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- Main Frame
+local mainFrame = Instance.new("Frame", screenGui)
+mainFrame.Size = UDim2.new(0.8, 0, 0.8, 0)
+mainFrame.Position = UDim2.new(0.1, 0, 0.1, 0)
+mainFrame.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
+mainFrame.BorderSizePixel = 2
+
+-- Player List Panel
+local playerListFrame = Instance.new("ScrollingFrame", mainFrame)
+playerListFrame.Size = UDim2.new(0.3, 0, 1, 0)
+playerListFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+playerListFrame.ScrollBarThickness = 8
+playerListFrame.BackgroundColor3 = Color3.fromRGB(180, 180, 180)
+playerListFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+playerListFrame.AutomaticSize = Enum.AutomaticSize.None
+playerListFrame.BorderSizePixel = 1
+
+-- Layout
+local listLayout = Instance.new("UIListLayout")
+listLayout.SortOrder = Enum.SortOrder.LayoutOrder
+listLayout.Padding = UDim.new(0, 4)
+listLayout.Parent = playerListFrame
+
+-- Detail Panel
+local detailFrame = Instance.new("Frame", mainFrame)
+detailFrame.Size = UDim2.new(0.7, 0, 1, 0)
+detailFrame.Position = UDim2.new(0.3, 0, 0, 0)
+detailFrame.BackgroundColor3 = Color3.fromRGB(245, 245, 245)
+
+-- Thumbnail
+local thumbnail = Instance.new("ImageLabel", detailFrame)
+thumbnail.Size = UDim2.new(0, 100, 0, 100)
+thumbnail.Position = UDim2.new(0, 20, 0, 20)
+thumbnail.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+thumbnail.BorderSizePixel = 1
+thumbnail.ScaleType = Enum.ScaleType.Fit
+thumbnail.Visible = true  -- Hide the image label (no image)
+
+-- Display Name
+local displayNameLabel = Instance.new("TextLabel", detailFrame)
+displayNameLabel.Position = UDim2.new(0, 140, 0, 20)
+displayNameLabel.Size = UDim2.new(1, -160, 0, 30)
+displayNameLabel.TextScaled = true
+displayNameLabel.Font = Enum.Font.SourceSans
+displayNameLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+displayNameLabel.Text = "DisplayName"
+
+-- Username
+local usernameLabel = Instance.new("TextLabel", detailFrame)
+usernameLabel.Position = UDim2.new(0, 140, 0, 55)
+usernameLabel.Size = UDim2.new(1, -160, 0, 30)
+usernameLabel.TextScaled = true
+usernameLabel.Font = Enum.Font.SourceSans
+usernameLabel.TextColor3 = Color3.fromRGB(50, 50, 50)
+usernameLabel.Text = "Username"
+
+local statsLabel = Instance.new("TextLabel", detailFrame)
+statsLabel.Position = UDim2.new(0, 20, 0, 140)
+statsLabel.Size = UDim2.new(1, -40, 0, 25)
+statsLabel.Text = "Stats:"
+statsLabel.TextScaled = true
+statsLabel.Font = Enum.Font.SourceSansBold
+statsLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+
+local StatListFrame = Instance.new("ScrollingFrame", detailFrame)
+StatListFrame.Size = UDim2.new(1, -40, 0, 250)
+StatListFrame.Position = UDim2.new(0, 20, 0, 170)
+StatListFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+StatListFrame.ScrollBarThickness = 8
+StatListFrame.BackgroundColor3 = Color3.fromRGB(245, 245, 245)
+StatListFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+StatListFrame.AutomaticSize = Enum.AutomaticSize.None
+StatListFrame.BorderSizePixel = 0
+
+-- Health
+local healthLabel = Instance.new("TextLabel", StatListFrame)
+healthLabel.Position = UDim2.new(0, 20, 0, 0)
+healthLabel.Size = UDim2.new(1, -40, 0, 25)
+healthLabel.Text = "Health: N/A"
+healthLabel.TextScaled = true
+healthLabel.Font = Enum.Font.SourceSans
+healthLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+
+local levelLabel = Instance.new("TextLabel", StatListFrame)
+levelLabel.Position = UDim2.new(0, 20, 0, 30)
+levelLabel.Size = UDim2.new(1, -40, 0, 25)
+levelLabel.Text = "Level: N/A"
+levelLabel.TextScaled = true
+levelLabel.Font = Enum.Font.SourceSans
+levelLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+
+local viewLabel = Instance.new("TextButton", detailFrame)
+viewLabel.Position = UDim2.new(0, 20, 0, 500)
+viewLabel.Size = UDim2.new(1, -500, 0, 25)
+viewLabel.Text = "View"
+viewLabel.TextScaled = true
+viewLabel.Font = Enum.Font.SourceSans
+viewLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+
+local unviewLabel = Instance.new("TextButton", detailFrame)
+unviewLabel.Position = UDim2.new(0, 20, 0, 540)
+unviewLabel.Size = UDim2.new(1, -500, 0, 25)
+unviewLabel.Text = "Unview"
+unviewLabel.TextScaled = true
+unviewLabel.Font = Enum.Font.SourceSans
+unviewLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
