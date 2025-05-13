@@ -43,7 +43,7 @@ thumbnail.Position = UDim2.new(0, 20, 0, 20)
 thumbnail.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
 thumbnail.BorderSizePixel = 1
 thumbnail.ScaleType = Enum.ScaleType.Fit
-thumbnail.Visible = false  -- Hide the image label (no image)
+thumbnail.Visible = true  -- Hide the image label (no image)
 
 -- Display Name
 local displayNameLabel = Instance.new("TextLabel", detailFrame)
