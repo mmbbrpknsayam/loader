@@ -581,87 +581,79 @@ unviewLabel.TextScaled = true
 unviewLabel.Font = Enum.Font.SourceSans
 unviewLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
 
-local currentHealthConnection
-local currentCharConnection
 local selectedPlayer = nil
 local originalSubject = camera.CameraSubject
+local currentHealthConnection = nil
+local currentLevelConnection = nil
 
-local function updatePlayerInfo(plr)
-	displayNameLabel.Text = "Display Name: " .. plr.DisplayName
-	usernameLabel.Text = "Username: " .. plr.Name
+-- Health updater
+local function updateHealth(selectedPlayer)
+	if currentHealthConnection then currentHealthConnection:Disconnect() end
 
-	-- Clear previous connections
-	if currentHealthConnection then
-		currentHealthConnection:Disconnect()
-		currentHealthConnection = nil
-	end
-	if currentCharConnection then
-		currentCharConnection:Disconnect()
-		currentCharConnection = nil
-	end
+	if selectedPlayer.Character and selectedPlayer.Character:FindFirstChild("Humanoid") then
+		local humanoid = selectedPlayer.Character.Humanoid
+		healthLabel.Text = "Health: " .. math.floor(humanoid.Health)
 
-	local function updateHealth()
-		if plr.Character and plr.Character:FindFirstChild("Humanoid") then
-			healthLabel.Text = "Health: " .. math.floor(plr.Character.Humanoid.Health)
-		else
-			healthLabel.Text = "Health: N/A"
-		end
-	end
-
-	updateHealth()
-
-	-- Listen for new character
-	currentCharConnection = plr.CharacterAdded:Connect(function(char)
-		char:WaitForChild("Humanoid")
-		updateHealth()
-		if currentHealthConnection then
-			currentHealthConnection:Disconnect()
-		end
-		currentHealthConnection = char:WaitForChild("Humanoid").HealthChanged:Connect(updateHealth)
-	end)
-
-	-- Listen for health changes now if character already exists
-	if plr.Character and plr.Character:FindFirstChild("Humanoid") then
-		currentHealthConnection = plr.Character.Humanoid.HealthChanged:Connect(updateHealth)
+		currentHealthConnection = humanoid:GetPropertyChangedSignal("Health"):Connect(function()
+			healthLabel.Text = "Health: " .. math.floor(humanoid.Health)
+		end)
+	else
+		healthLabel.Text = "Health: N/A"
 	end
 end
 
--- Populate player list with buttons
-for _, plr in ipairs(Players:GetPlayers()) do
-	local button = Instance.new("TextButton", playerListFrame)
-	button.Size = UDim2.new(1, -8, 0, 30)
-	button.Text = plr.DisplayName
-	button.BackgroundColor3 = Color3.fromRGB(160, 160, 160)
-	button.TextScaled = true
-	button.Font = Enum.Font.SourceSans
-	button.TextColor3 = Color3.fromRGB(20, 20, 20)
+-- Level updater
+local function updateLevel(selectedPlayer)
+	if currentLevelConnection then currentLevelConnection:Disconnect() end
 
-	-- Click event for selecting player
-	button.MouseButton1Click:Connect(function()
-		selectedPlayer = plr
-		updatePlayerInfo(plr)
+	local success, levelValue = pcall(function()
+		return selectedPlayer:WaitForChild("Data"):WaitForChild("Level")
 	end)
+
+	if success and levelValue then
+		levelLabel.Text = "Level: " .. levelValue.Value
+		currentLevelConnection = levelValue:GetPropertyChangedSignal("Value"):Connect(function()
+			levelLabel.Text = "Level: " .. levelValue.Value
+		end)
+	else
+		levelLabel.Text = "Level: N/A"
+	end
 end
 
--- Update for new players joining
-Players.PlayerAdded:Connect(function(plr)
-	local button = Instance.new("TextButton", playerListFrame)
-	button.Size = UDim2.new(1, -8, 0, 30)
-	button.Text = plr.DisplayName
-	button.BackgroundColor3 = Color3.fromRGB(160, 160, 160)
-	button.TextScaled = true
-	button.Font = Enum.Font.SourceSans
-	button.TextColor3 = Color3.fromRGB(20, 20, 20)
+-- Main updater
+local function updateDetails(selectedPlayer)
+	displayNameLabel.Text = selectedPlayer.DisplayName
+	usernameLabel.Text = selectedPlayer.Name
+	updateHealth(selectedPlayer)
+	updateLevel(selectedPlayer)
+end
 
-	-- Click event for selecting player
-	button.MouseButton1Click:Connect(function()
-		updatePlayerInfo(plr)
-	end)
-end)
+-- Refresh player list
+local function refreshPlayerList()
+	for _, child in ipairs(playerListFrame:GetChildren()) do
+		if child:IsA("TextButton") then
+			child:Destroy()
+		end
+	end
+
+	for _, plr in ipairs(Players:GetPlayers()) do
+		local button = Instance.new("TextButton", playerListFrame)
+		button.Size = UDim2.new(1, -8, 0, 30)
+		button.Text = plr.DisplayName
+		button.BackgroundColor3 = Color3.fromRGB(160, 160, 160)
+		button.TextScaled = true
+		button.Font = Enum.Font.SourceSans
+		button.TextColor3 = Color3.fromRGB(20, 20, 20)
+
+		button.MouseButton1Click:Connect(function()
+			selectedPlayer = plr
+			updateDetails(plr)
+		end)
+	end
+end
 
 viewLabel.MouseButton1Click:Connect(function()
 	if selectedPlayer and selectedPlayer.Character and selectedPlayer.Character:FindFirstChild("Humanoid") then
-		originalSubject = camera.CameraSubject
 		camera.CameraSubject = selectedPlayer.Character.Humanoid
 	end
 end)
@@ -672,9 +664,16 @@ unviewLabel.MouseButton1Click:Connect(function()
 	end
 end)
 
-local screenGui = Instance.new("ScreenGui")
-screenGui.ResetOnSpawn = false  -- Prevent the UI from resetting on spawn
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+-- Auto-refresh the player list every 5 seconds
+task.spawn(function()
+	while true do
+		refreshPlayerList()
+		task.wait(5)
+	end
+end)
+
+-- Initial refresh
+refreshPlayerList()
 
 -- Create ImageButton
 local imageButton = Instance.new("ImageButton")
