@@ -179,3 +179,27 @@ task.spawn(function()
 end)
 
 refreshPlayerList()
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.ResetOnSpawn = false  -- Prevent the UI from resetting on spawn
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create ImageButton
+local imageButton = Instance.new("ImageButton")
+imageButton.Parent = screenGui
+imageButton.Size = UDim2.new(0, 50, 0, 50)  -- Set size of the button
+imageButton.Position = UDim2.new(0, 10, 0, 70)  -- Move the button down 50 pixels
+imageButton.Image = "rbxassetid://128243454668365"  -- Set image using the asset ID
+
+-- Set the button's background transparency to 100% (invisible)
+imageButton.BackgroundTransparency = 1
+
+-- Create UICorner for rounding the button's corners
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(1, 0)  -- Full circle if the button is square
+uiCorner.Parent = imageButton
+
+-- When the button is clicked
+imageButton.MouseButton1Click:Connect(function()
+    mainFrame.Visible = not mainFrame.Visible
+end)
