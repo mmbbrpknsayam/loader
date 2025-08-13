@@ -28,7 +28,7 @@ local Projects = {
         Loader = "https://raw.githubusercontent.com/moilthink/script-r/refs/heads/main/slap";
     };
     ["Night Forest"] = {
-        GameId = {};
+        GameId = 126509999114328;
         PlaceIds = {};
         Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/nightforest.lua";
     };
