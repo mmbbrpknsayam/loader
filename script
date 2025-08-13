@@ -29,7 +29,7 @@ local Projects = {
     };
     ["Night Forest"] = {
         GameId = {};
-        PlaceIds = 79546208627805;
+        PlaceIds = {};
         Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/nightforest.lua";
     };
     ["Dead Rails"] = {
@@ -43,14 +43,13 @@ local Loaded = false
 local gameId = game.GameId
 
 for _, v in pairs(Projects) do
-    if v.GameId == gameId or table.find(v.PlaceIds, placeId) then
+    if v.GameId == gameId then
         Loaded = true
-        print("✅ Loader found for", v.GameId == gameId and ("GameId: " .. gameId) or ("PlaceId: " .. placeId))
+        print("✅ Loader found for GameId:", gameId)
         loadstring(game:HttpGet(v.Loader))()
-        break
     end
 end
 
 if not Loaded then
-    warn("❌ No loader found for this GameId or PlaceId:", gameId, placeId)
+    warn("❌ No loader found for this GameId:", gameId)
 end
