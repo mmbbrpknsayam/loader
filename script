@@ -15,27 +15,27 @@ local Projects = {
     ["Grow a Garden"] = {
         GameId = 7436755782;
         PlaceIds = {};
-        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/grow";
+        Loader = "https://raw.githubusercontent.com/moilthink/script-r/refs/heads/main/grow";
     };
     ["Door"] = {
         GameId = 2440500124;
         PlaceIds = {};
-        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/door";
+        Loader = "https://raw.githubusercontent.com/moilthink/script-r/refs/heads/main/door";
     };
     ["Slap Battle"] = {
         GameId = 2380077519;
         PlaceIds = {};
-        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/Slap.lua";
+        Loader = "https://raw.githubusercontent.com/moilthink/script-r/refs/heads/main/slap";
     };
     ["Pizza Place"] = {
         GameId = 47545;
         PlaceIds = {};
-        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/pizza";
+        Loader = "https://raw.githubusercontent.com/moilthink/script-r/refs/heads/main/pizza";
     };
     ["Dead Rails"] = {
         GameId = 7018190066;
         PlaceIds = {};
-        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/rail";
+        Loader = "https://raw.githubusercontent.com/moilthink/script-r/refs/heads/main/rail";
     };
 }
 
