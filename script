@@ -33,7 +33,7 @@ local Projects = {
         Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/nightforest.lua";
     };
     ["Forsaken"] = {
-        GameId = 7018190066;
+        GameId = 18687417158;
         PlaceIds = {};
         Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/forsaken.lua";
     };
