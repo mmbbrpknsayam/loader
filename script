@@ -32,10 +32,10 @@ local Projects = {
         PlaceIds = {};
         Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/nightforest.lua";
     };
-    ["Dead Rails"] = {
+    ["Forsaken"] = {
         GameId = 7018190066;
         PlaceIds = {};
-        Loader = "https://raw.githubusercontent.com/moilthink/script-r/refs/heads/main/rail";
+        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/forsaken.lua";
     };
 }
 
