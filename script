@@ -45,11 +45,11 @@ local gameId = game.GameId
 for _, v in pairs(Projects) do
     if v.GameId == gameId then
         Loaded = true
-        print("✅ Loader found for GameId:", gameId)
+        print("Loader found for GameId:", gameId)
         loadstring(game:HttpGet(v.Loader))()
     end
 end
 
 if not Loaded then
-    warn("❌ No loader found for this GameId:", gameId)
+    warn("No loader found for this GameId:", gameId)
 end
