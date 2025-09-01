@@ -15,7 +15,7 @@ local Projects = {
     ["Grow a Garden"] = {
         GameId = 7436755782;
         PlaceIds = {};
-        Loader = "https://raw.githubusercontent.com/moilthink/script-r/refs/heads/main/grow";
+        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/grow.lua";
     };
     ["Door"] = {
         GameId = 2440500124;
