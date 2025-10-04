@@ -37,6 +37,11 @@ local Projects = {
         PlaceIds = {};
         Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/forsaken.lua";
     };
+    ["Plant"] = {
+        GameId = 8316902627;
+        PlaceIds = {};
+        Loader = "https://raw.githubusercontent.com/mmbbrpknsayam/Script/refs/heads/main/Plant.lua";
+    };
 }
 
 local Loaded = false
