@@ -22,6 +22,8 @@ local Tabs = {
 
 --// Toggle
 local Toggle1 = Tabs.Main:CreateToggle("MyToggle", {Title = "Auto Harvest", Default = false})
+
+-- ensure the guard var exists (preserve the library's interaction behavior)
 local Toggle1Interacted = false
 
 --// Services
@@ -31,7 +33,7 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local GameEvents = ReplicatedStorage:WaitForChild("GameEvents")
 
---// Helper: find the player's farm
+--// Helper: find player's farm (works even if farm is added later)
 local function GetPlayerFarm(player)
     for _, farm in pairs(workspace.Farm:GetChildren()) do
         local important = farm:FindFirstChild("Important")
@@ -45,27 +47,38 @@ local function GetPlayerFarm(player)
     return nil
 end
 
---// Harvest helper
+--// Harvest helpers
 local function HarvestPlant(Plant)
     if not Plant then return end
-    local Prompt = Plant:FindFirstChildWhichIsA("ProximityPrompt", true)
+    local Prompt = Plant:FindFirstChild("ProximityPrompt", true)
     if Prompt and Prompt.Enabled then
+        -- use pcall in case fireproximityprompt errors on some exploit environments
         pcall(function() fireproximityprompt(Prompt) end)
     end
 end
 
---// Collect harvestable plants (recursive)
 local function CollectHarvestableFromFolder(folder, outTable)
     if not folder then return end
+    for _, Plant in pairs(folder:GetChildren()) do
+        if not Plant then continue end
 
-    for _, descendant in ipairs(folder:GetDescendants()) do
-        if descendant:IsA("ProximityPrompt") and descendant.Enabled then
-            table.insert(outTable, descendant.Parent)
+        local Prompt = Plant:FindFirstChild("ProximityPrompt", true)
+        if Prompt and Prompt.Enabled then
+            table.insert(outTable, Plant)
+        end
+
+        local Fruits = Plant:FindFirstChild("Fruits")
+        if Fruits then
+            for _, Fruit in pairs(Fruits:GetChildren()) do
+                local FruitPrompt = Fruit:FindFirstChild("ProximityPrompt", true)
+                if FruitPrompt and FruitPrompt.Enabled then
+                    table.insert(outTable, Fruit)
+                end
+            end
         end
     end
 end
 
---// Gather all harvestable plants in your farm
 local function GetHarvestablePlantsForPlayer(player)
     local harvestable = {}
     local farm = GetPlayerFarm(player)
@@ -82,26 +95,26 @@ local function GetHarvestablePlantsForPlayer(player)
     return harvestable
 end
 
---// Auto Harvest System
+--// Auto Harvest Logic (smooth one-by-one)
 local AutoHarvesting = false
 
 local function StartAutoHarvest()
     if AutoHarvesting then return end
     AutoHarvesting = true
 
+    -- spawn a coroutine so UI thread isn't blocked
     task.spawn(function()
         while AutoHarvesting do
+            -- refresh plant list each cycle (keeps it robust to changes)
             local plants = GetHarvestablePlantsForPlayer(LocalPlayer)
-
             for _, plant in ipairs(plants) do
                 if not AutoHarvesting then break end
-
-                if plant.Name:lower():find("Tomato") then
-                    HarvestPlant(plant)
-                    task.wait(0.1)
-                end
+                HarvestPlant(plant)
+                task.wait(0.1) -- wait 0.1s between each harvest to avoid spam/lag
             end
 
+            -- small pause before next scan to prevent constant rescanning
+            -- tweak this if you want more/less responsiveness
             task.wait(1)
         end
     end)
@@ -111,7 +124,7 @@ local function StopAutoHarvest()
     AutoHarvesting = false
 end
 
---// Toggle connection (keep your interaction guard)
+--// Preserve your guard and use it in the toggle handler
 Toggle1:OnChanged(function(state)
     if not Toggle1Interacted then
         Toggle1Interacted = true
