@@ -106,8 +106,8 @@ local function StartAutoHarvest()
                 task.wait(0.1)
             end
         end
-    end)
-end
+    end
+end)
 
 local function StopAutoHarvest()
     AutoHarvesting = false
