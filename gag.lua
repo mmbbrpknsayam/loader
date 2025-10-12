@@ -1,4 +1,3 @@
---// UI Library
 local Library = loadstring(game:HttpGetAsync("https://github.com/ActualMasterOogway/Fluent-Renewed/releases/latest/download/Fluent.luau"))()
 
 local Window = Library:CreateWindow{
@@ -20,20 +19,16 @@ local Tabs = {
     }
 }
 
---// Toggle
 local Toggle1 = Tabs.Main:CreateToggle("MyToggle", {Title = "Auto Harvest", Default = false})
 
--- ensure the guard var exists (preserve the library's interaction behavior)
 local Toggle1Interacted = false
 
---// Services
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
 local LocalPlayer = Players.LocalPlayer
 local GameEvents = ReplicatedStorage:WaitForChild("GameEvents")
 
---// Helper: find player's farm (works even if farm is added later)
 local function GetPlayerFarm(player)
     for _, farm in pairs(workspace.Farm:GetChildren()) do
         local important = farm:FindFirstChild("Important")
@@ -47,12 +42,12 @@ local function GetPlayerFarm(player)
     return nil
 end
 
---// Harvest helpers
+
 local function HarvestPlant(Plant)
     if not Plant then return end
     local Prompt = Plant:FindFirstChild("ProximityPrompt", true)
     if Prompt and Prompt.Enabled then
-        -- use pcall in case fireproximityprompt errors on some exploit environments
+
         pcall(function() fireproximityprompt(Prompt) end)
     end
 end
@@ -95,27 +90,21 @@ local function GetHarvestablePlantsForPlayer(player)
     return harvestable
 end
 
---// Auto Harvest Logic (smooth one-by-one)
 local AutoHarvesting = false
 
 local function StartAutoHarvest()
     if AutoHarvesting then return end
     AutoHarvesting = true
 
-    -- spawn a coroutine so UI thread isn't blocked
     task.spawn(function()
         while AutoHarvesting do
-            -- refresh plant list each cycle (keeps it robust to changes)
+
             local plants = GetHarvestablePlantsForPlayer(LocalPlayer)
             for _, plant in ipairs(plants) do
-                if not AutoHarvesting then break end
+                if not AutoHarvesting then
                 HarvestPlant(plant)
-                task.wait(0.1) -- wait 0.1s between each harvest to avoid spam/lag
+                task.wait(0.1)
             end
-
-            -- small pause before next scan to prevent constant rescanning
-            -- tweak this if you want more/less responsiveness
-            task.wait(1)
         end
     end)
 end
@@ -124,7 +113,6 @@ local function StopAutoHarvest()
     AutoHarvesting = false
 end
 
---// Preserve your guard and use it in the toggle handler
 Toggle1:OnChanged(function(state)
     if not Toggle1Interacted then
         Toggle1Interacted = true
