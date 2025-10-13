@@ -1,8 +1,9 @@
+--// UI Library
 local Library = loadstring(game:HttpGetAsync("https://github.com/ActualMasterOogway/Fluent-Renewed/releases/latest/download/Fluent.luau"))()
 
 local Window = Library:CreateWindow{
-    Title = "gag hallowen",
-    SubTitle = "",
+    Title = "gag",
+    SubTitle = "V-0.1.1",
     TabWidth = 160,
     Size = UDim2.fromOffset(830, 525),
     Resize = true,
@@ -19,16 +20,20 @@ local Tabs = {
     }
 }
 
+--// Toggle
 local Toggle1 = Tabs.Main:CreateToggle("MyToggle", {Title = "Auto Harvest", Default = false})
 
+-- ensure the guard var exists (preserve the library's interaction behavior)
 local Toggle1Interacted = false
 
+--// Services
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
 local LocalPlayer = Players.LocalPlayer
 local GameEvents = ReplicatedStorage:WaitForChild("GameEvents")
 
+--// Helper: find player's farm (works even if farm is added later)
 local function GetPlayerFarm(player)
     for _, farm in pairs(workspace.Farm:GetChildren()) do
         local important = farm:FindFirstChild("Important")
@@ -42,12 +47,12 @@ local function GetPlayerFarm(player)
     return nil
 end
 
-
+--// Harvest helpers
 local function HarvestPlant(Plant)
     if not Plant then return end
     local Prompt = Plant:FindFirstChild("ProximityPrompt", true)
     if Prompt and Prompt.Enabled then
-
+        -- use pcall in case fireproximityprompt errors on some exploit environments
         pcall(function() fireproximityprompt(Prompt) end)
     end
 end
@@ -90,21 +95,26 @@ local function GetHarvestablePlantsForPlayer(player)
     return harvestable
 end
 
+--// Auto Harvest Logic (smooth one-by-one)
 local AutoHarvesting = false
 
 local function StartAutoHarvest()
     if AutoHarvesting then return end
     AutoHarvesting = true
 
+    -- spawn a coroutine so UI thread isn't blocked
     task.spawn(function()
         while AutoHarvesting do
-
+            -- refresh plant list each cycle (keeps it robust to changes)
             local plants = GetHarvestablePlantsForPlayer(LocalPlayer)
             for _, plant in ipairs(plants) do
-                if not AutoHarvesting then
+                if not AutoHarvesting then break end
                 HarvestPlant(plant)
-                task.wait(0.1)
+                task.wait(0.1) -- wait 0.1s between each harvest to avoid spam/lag
             end
+
+            -- small pause before next scan to prevent constant rescanning
+            -- tweak this if you want more/less responsiveness
             task.wait(1)
         end
     end)
@@ -114,6 +124,7 @@ local function StopAutoHarvest()
     AutoHarvesting = false
 end
 
+--// Preserve your guard and use it in the toggle handler
 Toggle1:OnChanged(function(state)
     if not Toggle1Interacted then
         Toggle1Interacted = true
@@ -124,5 +135,41 @@ Toggle1:OnChanged(function(state)
         StartAutoHarvest()
     else
         StopAutoHarvest()
+    end
+end)
+
+local Toggle3Interacted = false
+local BuyGearEnabled = false
+
+local Toggle3 = Tabs.Main:CreateToggle("MyToggle", {
+    Title = "Auto Buy",
+    Default = false
+})
+
+Toggle3:OnChanged(function(state)
+    if not Toggle3Interacted then
+        Toggle3Interacted = true
+        return
+    end
+
+    BuyGearEnabled = state  -- directly use the state from toggle
+
+    if BuyGearEnabled then
+        task.spawn(function()
+            while BuyGearEnabled do
+                local args = {
+                    -- replace this with your real argument, example:
+                    "All"
+                }
+
+                game:GetService("ReplicatedStorage")
+                    :WaitForChild("GameEvents")
+                    :WaitForChild("WitchesBrew")
+                    :WaitForChild("SubmitItemToCauldron")
+                    :InvokeServer(unpack(args))
+
+                task.wait(0.1)
+            end
+        end)
     end
 end)
